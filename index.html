@@ -63,7 +63,7 @@
             divRespuesta.innerText = "Conectando...";
 
             try {
-                const response = await fetch('https://escandonale.github.io/plan-franca/');
+                const response = await fetch('http://192.168.1.136:5000/datos');
                 
                 if (response.ok) {
                     const data = await response.json();
@@ -77,6 +77,11 @@
                 divRespuesta.style.color = "red";
                 console.error("Error de conexión:", error);
             }
+        }
+    </script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js')
         }
     </script>
 </body>
