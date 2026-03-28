@@ -2,7 +2,7 @@
   "short_name": "PlanFranca",
   "name": "Planificador de Calendario para La Franca",
   "display": "standalone",
-  "start_url": "index.html",
+  "start_url": ".",
   "background_color": "#ffffff",
   "theme_color": "#007bff",
   "icons": [
