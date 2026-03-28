@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planificador La Franca</title>
+    <link rel="manifest" href="manifest.json">
+    <style>
+        /* Estilos básicos para que parezca una App móvil */
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f2f5;
+        }
+        .card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            text-align: center;
+            width: 80%;
+            max-width: 400px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        button:active {
+            transform: scale(0.98);
+        }
+        #respuesta {
+            margin-top: 20px;
+            color: #555;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <h2>¡Bienvenida!</h2>
+        <p>Pulsa el botón para conectar con el servidor del PC.</p>
+        
+        <button onclick="conectarServidor()">Probar Conexión</button>
+
+        <div id="respuesta">Esperando respuesta...</div>
+    </div>
+
+    <script>
+        async function conectarServidor() {
+            const divRespuesta = document.getElementById('respuesta');
+            divRespuesta.innerText = "Conectando...";
+
+            try {
+                const response = await fetch('http://192.168.1.136:5000/datos');
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    divRespuesta.innerText = "Servidor dice: " + data.mensaje;
+                    divRespuesta.style.color = "green";
+                } else {
+                    divRespuesta.innerText = "Error en la respuesta del servidor";
+                }
+            } catch (error) {
+                divRespuesta.innerText = "No se pudo conectar. ¿Está el servidor encendido?";
+                divRespuesta.style.color = "red";
+                console.error("Error de conexión:", error);
+            }
+        }
+    </script>
+</body>
+</html>
