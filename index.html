@@ -53,7 +53,9 @@
         <p>Pulsa el botón para conectar con el servidor del PC.</p>
         
         <button onclick="conectarServidor()">Probar Conexión</button>
+        <button id="btnInstalar" style="display: none; background-color: #ff9800; margin-top: 15px;">📲 Instalar en el móvil</button>
 
+    
         <div id="respuesta">Esperando respuesta...</div>
     </div>
 
@@ -83,6 +85,40 @@
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('./sw.js');
+            });
+        }
+    </script>
+    <script>
+        let promptInstalacion;
+        const botonInstalar = document.getElementById('btnInstalar');
+
+        // Chrome lanza este evento si tu PWA cumple los requisitos
+        window.addEventListener('beforeinstallprompt', (e) => {
+            // Evitamos que Chrome muestre su propio cartel feo
+            e.preventDefault();
+            // Guardamos el evento para usarlo luego
+            promptInstalacion = e;
+            // ¡Mostramos nuestro botón naranja!
+            botonInstalar.style.display = 'block';
+        });
+
+        botonInstalar.addEventListener('click', async () => {
+            if (promptInstalacion !== null) {
+            // Mostramos el aviso de instalación oficial del sistema
+            promptInstalacion.prompt();
+            const { outcome } = await promptInstalacion.userChoice;
+            if (outcome === 'accepted') {
+                console.log('La hermana aceptó instalar la app');
+                botonInstalar.style.display = 'none'; // Escondemos el botón
+            }
+            promptInstalacion = null;
+            }
+        });
+
+        // Registrar el Service Worker (necesario para la PWA)
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+            navigator.serviceWorker.register('./sw.js');
             });
         }
     </script>
